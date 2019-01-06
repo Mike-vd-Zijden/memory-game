@@ -71,6 +71,10 @@ h1 {
     cursor: default;
 }
 
+.deck .card.open.error {
+    background: red;
+}
+
 .deck .card.show {
     font-size: 33px;
 }
@@ -101,6 +105,7 @@ h1 {
 .score-panel .stars li {
     list-style: none;
     display: inline-block;
+    color:gold;
 }
 
 .score-panel .restart {
