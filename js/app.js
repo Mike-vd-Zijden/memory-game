@@ -8,6 +8,11 @@ let movesCount = 0;
 let mistakes = 0;
 let playable = false;
 let movesCountElement = document.getElementById('movesCount');
+let timeVar = setInterval(countTimer, 1000);
+let totalSeconds = 0;
+let timePlayed = "00:00:00";
+const timer = document.getElementById('counter');
+const modal = document.getElementById('victoryModal');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -24,11 +29,13 @@ function shuffle(array) {
     return array;
 }
 
+// "Flips" a card by toggling its classes
 function toggleCard(element) {
     element.classList.toggle('open');
     element.classList.toggle('show');
 }
 
+// Determines the star rating by the number of mistakes made and updates the rating shown accordingly
 function determineAndUpdateStars() {
     switch (mistakes) {
         case 0:
@@ -57,6 +64,7 @@ function determineAndUpdateStars() {
     }
 }
 
+// Updates the move counter and checks if the star rating needs to be updated
 function updateMovesCounter() {
     movesCountElement.textContent = movesCount;
     determineAndUpdateStars();
@@ -67,6 +75,7 @@ function reset() {
     playable = false;
     movesCount = 0;
     mistakes = 0;
+    totalSeconds = 0;
     cards = shuffle(cards);
 
     cards.forEach(function (cardIcon, index) {
@@ -83,20 +92,23 @@ function reset() {
     };
 
     toggle();
-    setTimeout(toggle, 1500);
-    setTimeout(function () {playable = true;}, 1500);
+    setTimeout(toggle, 2000);
+    setTimeout(function () {playable = true;}, 2000);
 }
 
+// Marks a card as matching
 function toggleMatch(card) {
     toggleCard(card);
     card.classList.toggle('match');
 }
 
+// Makes both cards selected mark as matched
 function setMatch(card, matchingCard) {
     toggleMatch(card);
     toggleMatch(matchingCard);
 }
 
+// Shows that a mismatch was made, and resumes game after a short delay
 function setMismatch(card, mismatchedCard) {
     // TODO: Animate error
     card.classList.toggle('error');
@@ -113,13 +125,21 @@ function setMismatch(card, mismatchedCard) {
     setTimeout(function () {playable = true;}, 1500);
 }
 
+// Checks whether all cards match, and if so, opens victory modal
 function checkForVictory() {
     if (cards.length === document.querySelectorAll('.match').length) {
         //TODO: create victory screen
         console.log('victory');
+        document.getElementById('playTime').textContent = timePlayed;
+        document.getElementById('mistakesCount').textContent = mistakes;
+        console.log(document.getElementById('starList').innerHTML);
+        document.getElementById('starRating').innerHTML = document.getElementById('starList').innerHTML;
+
+        modal.style.display = "block";
     }
 }
 
+// Checks card clicked against number of scenarios to determine the right course of action
 function cardClick(event) {
     // If there is something going on that can't be interrupted, we do nothing
     if (!playable) return 0;
@@ -155,10 +175,34 @@ function cardClick(event) {
     checkForVictory();
 }
 
+// Adds cardClick event listener to all cards and resets game
 function setup() {
     document.querySelectorAll('.card').forEach(function (element) {
         element.addEventListener('click', cardClick);
     });
 
     reset();
+}
+
+// Closes victory modal and resets game
+function victoryReset() {
+    modal.style.display = "none";
+    reset();
+}
+
+// Pad function from https://stackoverflow.com/a/10073788
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+function countTimer() {
+    totalSeconds++;
+    const hour = Math.floor(totalSeconds / 3600);
+    const minute = Math.floor((totalSeconds - hour * 3600) / 60);
+    const seconds = totalSeconds - (hour * 3600 + minute * 60);
+
+    timePlayed = `${pad(hour, 2, '0')}:${pad(minute, 2, '0')}:${pad(seconds, 2, '0')}`;
+    timer.innerText = timePlayed;
 }
