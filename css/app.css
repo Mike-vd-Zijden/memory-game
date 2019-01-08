@@ -23,6 +23,7 @@ body {
 
 .container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -31,6 +32,7 @@ body {
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
+    display: none;
 }
 
 /*
@@ -38,31 +40,31 @@ h1 {
  */
 
 .deck {
-    width: 660px;
-    min-height: 680px;
+    width: 330px;
+    min-height: 340px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
-    border-radius: 10px;
-    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    padding: 16px;
+    border-radius: 5px;
+    box-shadow: 6px 7px 10px 0 rgba(46, 61, 73, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 0 0 3em;
+    margin: 2em 0 1em;
 }
 
 .deck .card {
-    height: 125px;
-    width: 125px;
+    height: 62px;
+    width: 62px;
     background: #2e3d49;
     font-size: 0;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 4px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    box-shadow: 2px 1px 10px 0 rgba(46, 61, 73, 0.5);
 }
 
 .deck .card.open {
@@ -152,4 +154,47 @@ h1 {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/*
+Move containers below playing field if screen is small so game is more prominent
+*/
+#scoreContainer {
+    order: 2;
+}
+
+#gameContainer {
+    order: 1;
+}
+
+#timerContainer {
+    order: 3;
+}
+
+/*
+ Once screen is big enough, enlarge playing field. No further scaling required
+  */
+@media screen and (min-width: 700px) {
+    #scoreContainer {
+        order: 1;
+    }
+
+    h1 {
+        display: block;
+    }
+
+    .deck {
+        width: 660px;
+        min-height: 680px;
+        padding: 32px;
+        border-radius: 10px;
+        box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+        margin: 0 0 3em;
+    }
+
+    .deck .card {
+        height: 125px;
+        width: 125px;
+        box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    }
 }

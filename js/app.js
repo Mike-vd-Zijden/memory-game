@@ -8,7 +8,6 @@ let movesCount = 0;
 let mistakes = 0;
 let playable = false;
 let movesCountElement = document.getElementById('movesCount');
-let timeVar = setInterval(countTimer, 1000);
 let totalSeconds = 0;
 let timePlayed = "00:00:00";
 const timer = document.getElementById('counter');
@@ -197,6 +196,9 @@ function pad(n, width, z) {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
+setInterval(countTimer, 1000);
+
+// Timer function adapted from https://www.youtube.com/watch?v=fXJ4w3lLOvM
 function countTimer() {
     totalSeconds++;
     const hour = Math.floor(totalSeconds / 3600);
